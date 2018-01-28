@@ -1,26 +1,19 @@
 package forestry.core.gui.elements;
 
 import forestry.api.core.IGuiElement;
-import forestry.api.core.IGuiElementLayout;
 
-public class GuiElementPanel extends GuiElementLayout {
+public class GuiElementPanel extends GuiElementContainer {
+	public GuiElementPanel(int width, int height) {
+		super(0, 0, width, height);
+	}
+
 	public GuiElementPanel(int xPos, int yPos, int width, int height) {
 		super(xPos, yPos, width, height);
 	}
 
-	public IGuiElementLayout addElement(IGuiElement element) {
-		elements.add(element);
-		return this;
-	}
-
-	public IGuiElementLayout removeElement(IGuiElement element) {
-		elements.remove(element);
-		return this;
-	}
-
 	@Override
 	public int getWidth() {
-		if(width > 0){
+		if (width > 0) {
 			return width;
 		}
 		int width = 0;
@@ -35,7 +28,7 @@ public class GuiElementPanel extends GuiElementLayout {
 
 	@Override
 	public int getHeight() {
-		if(height > 0){
+		if (height > 0) {
 			return height;
 		}
 		int height = 0;

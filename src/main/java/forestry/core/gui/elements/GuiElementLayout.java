@@ -1,16 +1,8 @@
 package forestry.core.gui.elements;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import forestry.api.core.IGuiElement;
 import forestry.api.core.IGuiElementLayout;
 
-public abstract class GuiElementLayout extends GuiElement implements IGuiElementLayout {
-	protected final List<IGuiElement> elements = new ArrayList<>();
-	protected final List<String> tooltip = new ArrayList<>();
-
+public abstract class GuiElementLayout extends GuiElementContainer implements IGuiElementLayout {
 	/* The distance between the different elements of this group. */
 	public int distance;
 
@@ -23,48 +15,13 @@ public abstract class GuiElementLayout extends GuiElement implements IGuiElement
 		return this;
 	}
 
-	public void addTooltip(String line){
-		tooltip.add(line);
-	}
-
-	public List<String> getTooltip() {
-		return tooltip;
-	}
-
 	@Override
 	public int getDistance() {
 		return distance;
 	}
 
-	public List<IGuiElement> getElements() {
-		return elements;
-	}
-
 	@Override
 	public int getSize() {
 		return elements.size();
-	}
-
-	@Override
-	public void draw(int startX, int startY) {
-		elements.forEach(element -> element.draw(startX + getX(), startY + getY()));
-	}
-
-	@Override
-	public List<String> getToolTip(int mouseX, int mouseY) {
-		mouseX -= getX();
-		mouseY -= getY();
-		for (IGuiElement element : elements) {
-			if (element.isMouseOver(mouseX, mouseY)) {
-				List<String> toolTip = element.getToolTip(mouseX, mouseY);
-				if (!toolTip.isEmpty()) {
-					return toolTip;
-				}
-			}
-		}
-		if(!tooltip.isEmpty()){
-			return tooltip;
-		}
-		return Collections.emptyList();
 	}
 }

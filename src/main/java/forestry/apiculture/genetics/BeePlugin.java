@@ -14,15 +14,15 @@ import forestry.api.apiculture.EnumBeeType;
 import forestry.api.apiculture.IAlleleBeeSpecies;
 import forestry.api.apiculture.IBee;
 import forestry.api.genetics.EnumDatabaseTab;
+import forestry.api.genetics.IDatabasePlugin;
 import forestry.api.genetics.IDatabaseTab;
-import forestry.api.genetics.ISpeciesPlugin;
 import forestry.apiculture.ModuleApiculture;
 import forestry.apiculture.items.EnumHoneyComb;
 import forestry.core.config.Config;
 
 //TODO: Add support for the alyzer
 @SideOnly(Side.CLIENT)
-public class BeePlugin implements ISpeciesPlugin<IBee> {
+public class BeePlugin implements IDatabasePlugin<IBee> {
 	public static final BeePlugin INSTANCE = new BeePlugin();
 	private static final BeeDatabaseTab ACTIVE = new BeeDatabaseTab(EnumDatabaseTab.ACTIVE_SPECIES);
 	private static final BeeDatabaseTab INACTIVE = new BeeDatabaseTab(EnumDatabaseTab.INACTIVE_SPECIES);

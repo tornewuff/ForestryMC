@@ -1,14 +1,13 @@
 package forestry.core.gui.elements;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import javax.annotation.Nullable;
 import java.util.Map;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 import forestry.api.core.IGuiElement;
+import forestry.api.core.IGuiElementContainer;
 import forestry.api.core.IGuiElementFactory;
 import forestry.api.core.IGuiElementHelper;
 import forestry.api.core.IGuiElementLayout;
@@ -19,8 +18,8 @@ import forestry.api.genetics.IAlleleSpecies;
 import forestry.api.genetics.IAlleleTolerance;
 import forestry.api.genetics.IAlyzerPlugin;
 import forestry.api.genetics.IBreedingTracker;
+import forestry.api.genetics.IDatabasePlugin;
 import forestry.api.genetics.IMutation;
-import forestry.api.genetics.ISpeciesPlugin;
 import forestry.api.genetics.ISpeciesRoot;
 import forestry.core.config.Constants;
 import forestry.core.genetics.mutations.EnumMutateChance;
@@ -28,13 +27,13 @@ import forestry.core.gui.Drawable;
 import forestry.core.render.ColourProperties;
 
 public class GuiElementFactory implements IGuiElementFactory {
-	public static final ResourceLocation TEXTURE = new ResourceLocation(Constants.MOD_ID, Constants.TEXTURE_PATH_GUI + "/database_mutation_screen.png");
+	private static final ResourceLocation TEXTURE = new ResourceLocation(Constants.MOD_ID, Constants.TEXTURE_PATH_GUI + "/database_mutation_screen.png");
 
-	public static final Drawable QUESTION_MARK = new Drawable(TEXTURE, 78, 240, 16, 16);
-	public static final Drawable DOWN_SYMBOL = new Drawable(TEXTURE, 0, 247, 15, 9);
-	public static final Drawable UP_SYMBOL = new Drawable(TEXTURE, 15, 247, 15, 9);
-	public static final Drawable BOOTH_SYMBOL = new Drawable(TEXTURE, 30, 247, 15, 9);
-	public static final Drawable NONE_SYMBOL = new Drawable(TEXTURE, 45, 247, 15, 9);
+	private static final Drawable QUESTION_MARK = new Drawable(TEXTURE, 78, 240, 16, 16);
+	private static final Drawable DOWN_SYMBOL = new Drawable(TEXTURE, 0, 247, 15, 9);
+	private static final Drawable UP_SYMBOL = new Drawable(TEXTURE, 15, 247, 15, 9);
+	private static final Drawable BOOTH_SYMBOL = new Drawable(TEXTURE, 30, 247, 15, 9);
+	private static final Drawable NONE_SYMBOL = new Drawable(TEXTURE, 45, 247, 15, 9);
 
 	public static final GuiElementFactory INSTANCE = new GuiElementFactory();
 
@@ -48,17 +47,17 @@ public class GuiElementFactory implements IGuiElementFactory {
 	}
 
 	@Override
-	public IGuiElementLayout createVertical(int xPos, int yPos, int width) {
+	public GuiElementLayout createVertical(int xPos, int yPos, int width) {
 		return new GuiElementVertical(xPos, yPos, width);
 	}
 
 	@Override
-	public IGuiElementLayout createHorizontal(int xPos, int yPos, int height) {
+	public GuiElementLayout createHorizontal(int xPos, int yPos, int height) {
 		return new GuiElementHorizontal(xPos, yPos, height);
 	}
 
 	@Override
-	public IGuiElementLayout createPanel(int xPos, int yPos, int width, int height) {
+	public GuiElementContainer createPanel(int xPos, int yPos, int width, int height) {
 		return new GuiElementPanel(xPos, yPos, width, height);
 	}
 
@@ -74,15 +73,15 @@ public class GuiElementFactory implements IGuiElementFactory {
 		String fertilityString = Integer.toString(fertilityAllele.getValue()) + " x";
 
 		IGuiElementLayout layout = createHorizontal(x, 0, 0).setDistance(2);
-		layout.addElement(new GuiElementText(0, 0, 12, fertilityString, getColorCoding(fertilityAllele.isDominant())));
-		layout.addElement(new GuiElementDrawable(0, -1, new Drawable(TEXTURE, 60, 240 + texOffset, 12, 8)));
+		layout.text(fertilityString, getColorCoding(fertilityAllele.isDominant()));
+		layout.add(new GuiElementDrawable(0, -1, new Drawable(TEXTURE, 60, 240 + texOffset, 12, 8)));
 		return layout;
 	}
 
-	public IGuiElement createToleranceInfo(IAlleleTolerance toleranceAllele, IAlleleSpecies species, String text){
+	public IGuiElement createToleranceInfo(IAlleleTolerance toleranceAllele, IAlleleSpecies species, String text) {
 		IGuiElementLayout layout = createHorizontal(0, 0, 0).setDistance(0);
-		layout.addElement(new GuiElementText(0, 0, 12, text, getColorCoding(species.isDominant())));
-		layout.addElement(createToleranceInfo(toleranceAllele, 0));
+		layout.text(text, getColorCoding(species.isDominant()));
+		layout.add(createToleranceInfo(toleranceAllele, 0));
 		return layout;
 	}
 
@@ -99,42 +98,43 @@ public class GuiElementFactory implements IGuiElementFactory {
 			case BOTH_3:
 			case BOTH_4:
 			case BOTH_5:
-				layout.addElement(createBothSymbol(0, -1));
-				layout.addElement(new GuiElementText(0, 0, 12, text, textColor));
+				layout.add(createBothSymbol(0, -1));
+				layout.text(text, textColor);
 				break;
 			case DOWN_1:
 			case DOWN_2:
 			case DOWN_3:
 			case DOWN_4:
 			case DOWN_5:
-				layout.addElement(createDownSymbol(0, -1));
-				layout.addElement(new GuiElementText(0, 0, 12, text, textColor));
+				layout.add(createDownSymbol(0, -1));
+				layout.text(text, textColor);
 				break;
 			case UP_1:
 			case UP_2:
 			case UP_3:
 			case UP_4:
 			case UP_5:
-				layout.addElement(createUpSymbol(0, -1));
-				layout.addElement(new GuiElementText(0, 0, 12, text, textColor));
+				layout.add(createUpSymbol(0, -1));
+				layout.text(text, textColor);
 				break;
 			default:
-				layout.addElement(createNoneSymbol(0, -1));
-				layout.addElement(new GuiElementText(0, 0, 12, "(0)", textColor));
+				layout.add(createNoneSymbol(0, -1));
+				layout.text("(0)", textColor);
 				break;
 		}
 		return layout;
 	}
 
-	public IGuiElementLayout createMutationResultant(int x, int y, int width, int height, IMutation mutation, IBreedingTracker breedingTracker){
+	@Nullable
+	public IGuiElementContainer createMutationResultant(int x, int y, int width, int height, IMutation mutation, IBreedingTracker breedingTracker) {
 		if (breedingTracker.isDiscovered(mutation)) {
-			IGuiElementLayout element = new GuiElementPanel(x, y, width, height);
+			IGuiElementContainer element = new GuiElementPanel(x, y, width, height);
 			IAlyzerPlugin plugin = mutation.getRoot().getAlyzerPlugin();
 			Map<String, ItemStack> iconStacks = plugin.getIconStacks();
 
 			ItemStack firstPartner = iconStacks.get(mutation.getAllele0().getUID());
 			ItemStack secondPartner = iconStacks.get(mutation.getAllele1().getUID());
-			element.addElements(new GuiElementItemStack(0, 0, firstPartner), createProbabilityAdd(mutation, 21, 4), new GuiElementItemStack(33, 0, secondPartner));
+			element.add(new GuiElementItemStack(0, 0, firstPartner), createProbabilityAdd(mutation, 21, 4), new GuiElementItemStack(33, 0, secondPartner));
 			return element;
 		}
 		// Do not display secret undiscovered mutations.
@@ -145,19 +145,20 @@ public class GuiElementFactory implements IGuiElementFactory {
 		return createUnknownMutationGroup(x, y, width, height, mutation);
 	}
 
-	public IGuiElementLayout createMutation(int x, int y, int width, int height, IMutation mutation, IAllele species, IBreedingTracker breedingTracker){
+	@Nullable
+	public IGuiElementContainer createMutation(int x, int y, int width, int height, IMutation mutation, IAllele species, IBreedingTracker breedingTracker) {
 		if (breedingTracker.isDiscovered(mutation)) {
 			GuiElementPanel element = new GuiElementPanel(x, y, width, height);
 			ISpeciesRoot speciesRoot = mutation.getRoot();
 			int speciesIndex = speciesRoot.getSpeciesChromosomeType().ordinal();
-			ISpeciesPlugin plugin = mutation.getRoot().getSpeciesPlugin();
+			IDatabasePlugin plugin = mutation.getRoot().getSpeciesPlugin();
 			Map<String, ItemStack> iconStacks = plugin.getIndividualStacks();
 
 			ItemStack partner = iconStacks.get(mutation.getPartner(species).getUID());
 			IAllele resultAllele = mutation.getTemplate()[speciesIndex];
 			ItemStack result = iconStacks.get(resultAllele.getUID());
-			element.addElements(new GuiElementItemStack(0, 0, partner), new GuiElementItemStack( 33, 0, result));
-			element.addElements(createProbabilityArrow(mutation, 18, 4, breedingTracker));
+			element.add(new GuiElementItemStack(0, 0, partner), new GuiElementItemStack(33, 0, result));
+			createProbabilityArrow(element, mutation, 18, 4, breedingTracker);
 			return element;
 		}
 		// Do not display secret undiscovered mutations.
@@ -168,22 +169,22 @@ public class GuiElementFactory implements IGuiElementFactory {
 		return createUnknownMutationGroup(x, y, width, height, mutation, breedingTracker);
 	}
 
-	private static IGuiElementLayout createUnknownMutationGroup(int x, int y, int width, int height, IMutation mutation){
+	private static IGuiElementContainer createUnknownMutationGroup(int x, int y, int width, int height, IMutation mutation) {
 		GuiElementPanel element = new GuiElementPanel(x, y, width, height);
 
-		element.addElements(createQuestionMark(0, 0), createProbabilityAdd(mutation, 21,  4), createQuestionMark( 32, 0));
+		element.add(createQuestionMark(0, 0), createProbabilityAdd(mutation, 21, 4), createQuestionMark(32, 0));
 		return element;
 	}
 
-	private static IGuiElementLayout createUnknownMutationGroup(int x, int y, int width, int height, IMutation mutation, IBreedingTracker breedingTracker){
+	private static IGuiElementContainer createUnknownMutationGroup(int x, int y, int width, int height, IMutation mutation, IBreedingTracker breedingTracker) {
 		GuiElementPanel element = new GuiElementPanel(x, y, width, height);
 
-		element.addElements(createQuestionMark(0, 0), createQuestionMark( 32, 0));
-		element.addElements(createProbabilityArrow(mutation, 18, 4, breedingTracker));
+		element.add(createQuestionMark(0, 0), createQuestionMark(32, 0));
+		createProbabilityArrow(element, mutation, 18, 4, breedingTracker);
 		return element;
 	}
 
-	private static Collection<IGuiElement> createProbabilityArrow(IMutation combination, int x, int y, IBreedingTracker breedingTracker) {
+	private static void createProbabilityArrow(GuiElementPanel element, IMutation combination, int x, int y, IBreedingTracker breedingTracker) {
 		float chance = combination.getBaseChance();
 		int line = 247;
 		int column = 100;
@@ -209,16 +210,13 @@ public class GuiElementFactory implements IGuiElementFactory {
 				break;
 		}
 
-		List<IGuiElement> elements = new ArrayList<>();
 		// Probability arrow
-		elements.add(new GuiElementDrawable(x, y, new Drawable(TEXTURE, column, line, 15, 9)));
+		element.drawable(x, y, new Drawable(TEXTURE, column, line, 15, 9));
 
 		boolean researched = breedingTracker.isResearched(combination);
 		if (researched) {
-			elements.add(new GuiElementText(x + 9, y + 1, 10, 10, "+"));
+			element.text(x + 9, y + 1, 10, 10, "+");
 		}
-
-		return elements;
 	}
 
 	private static GuiElementDrawable createProbabilityAdd(IMutation mutation, int x, int y) {

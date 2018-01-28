@@ -14,15 +14,15 @@ import forestry.api.arboriculture.EnumGermlingType;
 import forestry.api.arboriculture.IAlleleTreeSpecies;
 import forestry.api.arboriculture.ITree;
 import forestry.api.genetics.EnumDatabaseTab;
+import forestry.api.genetics.IDatabasePlugin;
 import forestry.api.genetics.IDatabaseTab;
-import forestry.api.genetics.ISpeciesPlugin;
 import forestry.arboriculture.ModuleArboriculture;
 import forestry.core.config.Config;
 import forestry.core.items.ItemFruit;
 
 //TODO: Add support for the alyzer
 @SideOnly(Side.CLIENT)
-public class TreePlugin implements ISpeciesPlugin<ITree>  {
+public class TreePlugin implements IDatabasePlugin<ITree> {
 	public static final TreePlugin INSTANCE = new TreePlugin();
 	private static final TreeDatabaseTab ACTIVE = new TreeDatabaseTab(EnumDatabaseTab.ACTIVE_SPECIES);
 	private static final TreeDatabaseTab INACTIVE = new TreeDatabaseTab(EnumDatabaseTab.INACTIVE_SPECIES);

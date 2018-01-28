@@ -50,7 +50,7 @@ public class WidgetDatabaseTabs extends Widget {
 			EnumDatabaseTab tab = TABS[tabIndex];
 			GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 			Drawable tabTexture = GUI_TAB;
-			int xPos = this.xPos + tabIndex * (GUI_TAB.width + spacing);
+			int xPos = this.xPos + tabIndex * (GUI_TAB.uWidth + spacing);
 			tabTexture.draw(xPos, yPos - 4);
 			GuiUtil.drawItemStack(manager.gui, parent.getItemStack(tab), startX + xPos + 6, startY + yPos + 2);
 		}
@@ -72,7 +72,7 @@ public class WidgetDatabaseTabs extends Widget {
 		} else {
 			tabTexture = GUI_TAB_ACTIVE_CENTER;
 		}
-		int xPos = this.xPos + selectedTab * (GUI_TAB.width + spacing);
+		int xPos = this.xPos + selectedTab * (GUI_TAB.uWidth + spacing);
 		tabTexture.draw(xPos, yPos - 4);
 		GuiUtil.drawItemStack(manager.gui, parent.getItemStack(tab), startX + xPos + 6, startY + yPos + 2);
 	}
@@ -108,8 +108,8 @@ public class WidgetDatabaseTabs extends Widget {
 		}
 		int x = 0;
 		for(int tabIndex = 0;tabIndex < TABS.length;tabIndex++){
-			if(mouseX < x || mouseX > x + GUI_TAB.width){
-				x+= spacing + GUI_TAB.width;
+			if(mouseX < x || mouseX > x + GUI_TAB.uWidth){
+				x+= spacing + GUI_TAB.uWidth;
 				continue;
 			}
 			return tabIndex;

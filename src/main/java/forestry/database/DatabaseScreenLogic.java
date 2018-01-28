@@ -5,8 +5,8 @@ import javax.annotation.Nullable;
 import net.minecraft.item.ItemStack;
 
 import forestry.api.genetics.AlleleManager;
+import forestry.api.genetics.IDatabasePlugin;
 import forestry.api.genetics.IDatabaseTab;
-import forestry.api.genetics.ISpeciesPlugin;
 import forestry.api.genetics.IIndividual;
 import forestry.api.genetics.ISpeciesRoot;
 
@@ -15,7 +15,7 @@ public class DatabaseScreenLogic {
 	@Nullable
 	public ISpeciesRoot speciesRoot;
 	@Nullable
-	public ISpeciesPlugin databasePlugin;
+	public IDatabasePlugin databasePlugin;
 	@Nullable
 	public IIndividual individual;
 	public ItemStack itemStack = ItemStack.EMPTY;
@@ -78,7 +78,7 @@ public class DatabaseScreenLogic {
 	}
 
 	private IDatabaseTab[] getTabs(ISpeciesRoot speciesRoot){
-		ISpeciesPlugin databasePlugin = speciesRoot.getSpeciesPlugin();
+		IDatabasePlugin databasePlugin = speciesRoot.getSpeciesPlugin();
 		if(databasePlugin == null){
 			//no plugin ofr this species
 			return null;
@@ -111,6 +111,6 @@ public class DatabaseScreenLogic {
 		NOT_ANALYZED,
 		//The ISpeciesRoot has no IGeneticDevicePlugin for this individual
 		NO_PLUGIN,
-		SUCCESS;
+		SUCCESS
 	}
 }

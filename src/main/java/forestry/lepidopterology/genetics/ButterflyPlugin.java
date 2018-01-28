@@ -12,8 +12,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import forestry.api.genetics.EnumDatabaseTab;
+import forestry.api.genetics.IDatabasePlugin;
 import forestry.api.genetics.IDatabaseTab;
-import forestry.api.genetics.ISpeciesPlugin;
 import forestry.api.lepidopterology.EnumFlutterType;
 import forestry.api.lepidopterology.IAlleleButterflySpecies;
 import forestry.api.lepidopterology.IButterfly;
@@ -21,7 +21,7 @@ import forestry.core.config.Config;
 import forestry.lepidopterology.ModuleLepidopterology;
 
 @SideOnly(Side.CLIENT)
-public class ButterflyPlugin implements ISpeciesPlugin<IButterfly> {
+public class ButterflyPlugin implements IDatabasePlugin<IButterfly> {
 	public static final ButterflyPlugin INSTANCE = new ButterflyPlugin();
 	private static final ButterflyDatabaseTab ACTIVE = new ButterflyDatabaseTab(EnumDatabaseTab.ACTIVE_SPECIES);
 	private static final ButterflyDatabaseTab INACTIVE = new ButterflyDatabaseTab(EnumDatabaseTab.INACTIVE_SPECIES);

@@ -18,6 +18,7 @@ import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.relauncher.Side;
 
 import forestry.api.modules.IForestryModule;
+import forestry.book.ForesterBook;
 import forestry.core.IPickupHandler;
 import forestry.core.IResupplyHandler;
 import forestry.core.ISaveEventHandler;
@@ -160,6 +161,14 @@ public class InternalModuleHandler {
 				module.registerCrates();
 				Log.debug("Crates Complete: {}", module);
 			}
+		}
+	}
+
+	public void runBookInit() {
+		for (IForestryModule module : modules) {
+			Log.debug("Book Entry Registration Start: {}", module);
+			module.registerBookEntries(ForesterBook.INSTANCE);
+			Log.debug("Book Entry Registration  Complete: {}", module);
 		}
 	}
 

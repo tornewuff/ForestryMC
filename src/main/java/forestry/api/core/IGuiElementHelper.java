@@ -30,12 +30,20 @@ public interface IGuiElementHelper {
 	/**
 	 * Adds a {@link IGuiElement} to the parent of this.
 	 */
-	void add(IGuiElement element);
+	<E extends IGuiElement> E add(E element);
 
 	/**
-	 * Centers a element to the center of the x axis of the parent element.
-	 *
-	 * @return the element
+	 * Sets the x offset of the given element to the center of the parent.
+	 */
+	IGuiElement centerElementX(IGuiElement element);
+
+	/**
+	 * Sets the z offset of the given element to the center of the parent.
+	 */
+	IGuiElement centerElementY(IGuiElement element);
+
+	/**
+	 * Sets theoffset of the given element to the center of the parent.
 	 */
 	IGuiElement centerElement(IGuiElement element);
 
@@ -67,32 +75,51 @@ public interface IGuiElementHelper {
 	/**
 	 * Adds a text element with the default color,the align {@link GuiElementAlignment#LEFT} and the height 12.
 	 */
+	@Deprecated
 	void addText(String text);
+
+	/**
+	 * Adds a text element with the default color,the align {@link GuiElementAlignment#LEFT} and the height 12.
+	 */
+	@Deprecated
+	void addText(String text, boolean unicode);
 
 	/**
 	 * Adds a text element with the align {@link GuiElementAlignment#LEFT} and the height 12.
 	 */
+	@Deprecated
 	void addText(String text, int color);
 
 	/**
 	 * Adds a text element with the default color and the height 12.
 	 */
+	@Deprecated
 	void addText(String text, GuiElementAlignment align);
 
 	/**
 	 * Adds a text element with the height 12.
 	 */
-	void addText(String text,GuiElementAlignment align, int color);
+	@Deprecated
+	void addText(String text, GuiElementAlignment align, int color);
 
 	/**
 	 * Adds a text element.
 	 */
+	@Deprecated
 	void addText(int x, int height, String text, GuiElementAlignment align, int color);
+
+	/**
+	 * Adds a text element.
+	 */
+	@Deprecated
+	void addText(int x, int height, String text, GuiElementAlignment align, int color, boolean unicode);
 
 	/**
 	 * @return The element to which all elements are added.
 	 */
-	IGuiElement getParent();
+	IGuiElementLayout getParent();
+
+	int getDefaultColor();
 
 	IGuiElementFactory factory();
 }

@@ -1,5 +1,6 @@
 package forestry.core.gui.elements;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -17,6 +18,7 @@ public class GuiElementLayoutHelper implements IGuiElementLayoutHelper {
 	private final IGuiElementHelper parent;
 	private int xOffset;
 	private int yOffset;
+	@Nullable
 	private IGuiElementLayout currentLayout;
 	private boolean horizontal;
 
@@ -30,6 +32,7 @@ public class GuiElementLayoutHelper implements IGuiElementLayoutHelper {
 	/**
 	 * @return Only false if the helper has no space to add this element.
 	 */
+	@Override
 	public boolean add(IGuiElement element) {
 		if (currentLayout == null) {
 			layouts.add(currentLayout = layoutFactory.createLayout(0, 0));
@@ -62,7 +65,7 @@ public class GuiElementLayoutHelper implements IGuiElementLayoutHelper {
 			groupWidth += eleWidth;
 			xOffset = groupWidth;
 		}
-		currentLayout.addElement(element);
+		currentLayout.add(element);
 		return true;
 	}
 
@@ -74,6 +77,7 @@ public class GuiElementLayoutHelper implements IGuiElementLayoutHelper {
 		clear();
 	}
 
+	@Override
 	public void clear() {
 		layouts.clear();
 		currentLayout = null;
@@ -81,6 +85,7 @@ public class GuiElementLayoutHelper implements IGuiElementLayoutHelper {
 		yOffset = 0;
 	}
 
+	@Override
 	public Collection<IGuiElementLayout> layouts() {
 		return layouts;
 	}

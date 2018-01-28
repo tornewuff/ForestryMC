@@ -1,9 +1,9 @@
 package forestry.core.gui.elements;
 
 import forestry.api.core.IGuiElement;
-import forestry.api.core.IGuiElementLayout;
 
 public class GuiElementHorizontal extends GuiElementLayout {
+
 	public GuiElementHorizontal(int xPos, int yPos, int height) {
 		super(xPos, yPos, 0, height);
 	}
@@ -12,23 +12,23 @@ public class GuiElementHorizontal extends GuiElementLayout {
 		this.width = width;
 	}
 
-	public IGuiElementLayout addElement(IGuiElement element) {
+	public <E extends IGuiElement> E add(E element) {
 		elements.add(element);
 		element.setXOffset(width);
 		width += element.getWidth() + distance;
-		return this;
+		return element;
 	}
 
-	public IGuiElementLayout removeElement(IGuiElement element) {
+	public <E extends IGuiElement> E remove(E element) {
 		elements.remove(element);
 		width -= element.getWidth() + distance;
 		element.setXOffset(0);
-		return this;
+		return element;
 	}
 
 	@Override
 	public int getHeight() {
-		if(height > 0){
+		if (height > 0) {
 			return height;
 		}
 		int height = 0;

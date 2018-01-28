@@ -39,6 +39,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import forestry.Forestry;
+import forestry.api.book.IBookCategory;
+import forestry.api.book.IForesterBook;
 import forestry.api.circuits.ChipsetManager;
 import forestry.api.circuits.CircuitSocketType;
 import forestry.api.circuits.ICircuitLayout;
@@ -342,6 +344,11 @@ public class ModuleFarming extends BlankForestryModule {
 		ChipsetManager.solderManager.addRecipe(layoutManual, coreItems.tubes.get(EnumElectronTube.DIAMOND, 1), Circuits.farmCocoaManual);
 		ChipsetManager.solderManager.addRecipe(layoutManual, coreItems.tubes.get(EnumElectronTube.EMERALD, 1), Circuits.farmOrchardManual);
 		ChipsetManager.solderManager.addRecipe(layoutManual, coreItems.tubes.get(EnumElectronTube.ENDER, 1), Circuits.farmEnderManual);
+	}
+
+	@Override
+	public void registerBookEntries(IForesterBook book) {
+		IBookCategory category = book.addCategory("farming").setStack(getBlocks().farm.get(EnumFarmBlockType.PLAIN, 1));
 	}
 
 	@Override

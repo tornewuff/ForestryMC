@@ -60,6 +60,8 @@ import forestry.api.arboriculture.ITree;
 import forestry.api.arboriculture.IWoodType;
 import forestry.api.arboriculture.TreeManager;
 import forestry.api.arboriculture.WoodBlockKind;
+import forestry.api.book.IBookCategory;
+import forestry.api.book.IForesterBook;
 import forestry.api.core.ForestryAPI;
 import forestry.api.core.IArmorNaturalist;
 import forestry.api.genetics.AlleleManager;
@@ -445,6 +447,11 @@ public class ModuleArboriculture extends BlankForestryModule {
 				'#', "blockGlass",
 				'X', "treeSapling",
 				'Y', "chestWood");
+	}
+
+	@Override
+	public void registerBookEntries(IForesterBook book) {
+		IBookCategory category = book.addCategory("arboriculture").setStack(TreeDefinition.Cherry.getMemberStack(EnumGermlingType.SAPLING));
 	}
 
 	private static void registerAlleles() {

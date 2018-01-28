@@ -10,19 +10,19 @@ import forestry.api.core.IGuiElement;
 import forestry.core.gui.widgets.IScrollable;
 
 public class GuiElementScrollable extends GuiElementVertical implements IScrollable {
-	protected final List<IGuiElement> visibleElements = new ArrayList<>();
-	protected final int sizeX;
-	protected int elementOffset;
+	private final List<IGuiElement> visibleElements = new ArrayList<>();
+	private final int sizeY;
+	private int elementOffset;
 
 	public GuiElementScrollable(int xPos, int yPos, int width, int height) {
 		super(xPos, yPos, width);
-		this.sizeX = height;
+		this.sizeY = height;
 	}
 
 	public void updateVisibleElements(int offset) {
 		visibleElements.clear();
 		int height = 0;
-		int widgetEnd = yPos + sizeX;
+		int widgetEnd = yPos + sizeY;
 		for (int i = 0; i < elements.size(); i++) {
 			IGuiElement element = elements.get(i);
 			if (i < offset) {
@@ -40,9 +40,8 @@ public class GuiElementScrollable extends GuiElementVertical implements IScrolla
 
 	public int getInvisibleElementCount() {
 		int count = 0;
-		int widgetEnd = yPos + sizeX;
-		for (int i = 0; i < elements.size(); i++) {
-			IGuiElement element = elements.get(i);
+		int widgetEnd = yPos + sizeY;
+		for (IGuiElement element : elements) {
 			int elementHeight = element.getY() + element.getHeight();
 			if (elementHeight > widgetEnd) {
 				count++;
@@ -79,7 +78,7 @@ public class GuiElementScrollable extends GuiElementVertical implements IScrolla
 	}
 
 	public void clear() {
-		removeElements(Lists.newArrayList(elements));
+		remove(Lists.newArrayList(elements));
 	}
 
 	@Override
@@ -89,6 +88,6 @@ public class GuiElementScrollable extends GuiElementVertical implements IScrolla
 
 	@Override
 	public int getHeight() {
-		return sizeX;
+		return sizeY;
 	}
 }

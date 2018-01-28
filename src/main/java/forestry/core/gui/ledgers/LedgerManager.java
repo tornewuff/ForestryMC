@@ -175,7 +175,7 @@ public class LedgerManager {
 		if (ledger != null) {
 			ToolTip toolTip = new ToolTip();
 			toolTip.add(ledger.getTooltip());
-			GuiUtil.drawToolTips(gui, toolTip, mouseX, mouseY);
+			GuiUtil.drawToolTips(gui, null, toolTip, mouseX, mouseY);
 		}
 	}
 
