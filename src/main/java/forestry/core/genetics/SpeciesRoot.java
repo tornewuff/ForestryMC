@@ -22,21 +22,17 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.function.Function;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 
 import forestry.api.genetics.IAllele;
 import forestry.api.genetics.IAlleleSpecies;
-import forestry.api.genetics.IAlyzerPlugin;
 import forestry.api.genetics.IChromosome;
 import forestry.api.genetics.IChromosomeType;
-import forestry.api.genetics.IDatabasePlugin;
 import forestry.api.genetics.IIndividual;
 import forestry.api.genetics.IIndividualTranslator;
 import forestry.api.genetics.IMutation;
-import forestry.api.genetics.ISpeciesDisplayHelper;
 import forestry.api.genetics.ISpeciesRoot;
 
 public abstract class SpeciesRoot implements ISpeciesRoot {
@@ -45,13 +41,6 @@ public abstract class SpeciesRoot implements ISpeciesRoot {
 	
 	/* RESEARCH */
 	private final LinkedHashMap<ItemStack, Float> researchCatalysts = new LinkedHashMap<>();
-
-	/* CLIENT */
-	public ISpeciesDisplayHelper displayHelper;
-
-	public SpeciesRoot(@Nullable Function<ISpeciesDisplayHelper, IAlyzerPlugin> alyzerPlugin, @Nullable Function<ISpeciesDisplayHelper, IDatabasePlugin> databasePlugin) {
-		this.displayHelper = new SpeciesDisplayHelper(this, alyzerPlugin, databasePlugin);
-	}
 
 	@Override
 	public Map<ItemStack, Float> getResearchCatalysts() {

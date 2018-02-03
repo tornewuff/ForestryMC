@@ -6,6 +6,7 @@
 package forestry.api.genetics;
 
 import javax.annotation.Nullable;
+import java.util.List;
 import java.util.Map;
 
 import net.minecraft.item.ItemStack;
@@ -29,6 +30,7 @@ public interface IDatabasePlugin<I extends IIndividual> {
 	Map<String, ItemStack> getIndividualStacks();
 
 	/* ALYZER */
+	List<String> getHints();
 
 	/* DATABASE */
 	/**

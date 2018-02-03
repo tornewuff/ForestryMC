@@ -2,26 +2,16 @@ package forestry.book.gui;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import net.minecraft.client.gui.GuiButton;
 
-import forestry.api.apiculture.BeeManager;
-import forestry.api.apiculture.EnumBeeType;
-import forestry.api.apiculture.IBeeMutation;
-import forestry.api.apiculture.IBeeRoot;
 import forestry.api.book.IBookCategory;
 import forestry.api.book.IBookEntry;
 import forestry.api.book.IForesterBook;
-import forestry.api.core.GuiElementAlignment;
-import forestry.api.core.IGuiElementLayout;
 import forestry.book.gui.buttons.GuiButtonBack;
 import forestry.book.gui.buttons.GuiButtonEntry;
 import forestry.book.gui.buttons.GuiButtonPage;
-import forestry.core.gui.Drawable;
-import forestry.core.gui.elements.GuiElementContainer;
-import forestry.core.gui.elements.GuiElementLayout;
 import forestry.core.gui.elements.GuiElementManager;
 
 public class GuiForestryBookEntries extends GuiForesterBook {
@@ -47,33 +37,6 @@ public class GuiForestryBookEntries extends GuiForesterBook {
 			yOffset++;
 		}
 		elementManager.clear();
-		IBeeRoot beeRoot = BeeManager.beeRoot;
-		IBeeMutation beeMutation = beeRoot.getMutations(true).get(0);
-		GuiElementLayout mutationElement = elementManager.vertical(RIGHT_PAGE_START_X, RIGHT_PAGE_START_Y, 108);
-		mutationElement.text("Bee Breeding", GuiElementAlignment.CENTER, 0);
-		GuiElementLayout background = mutationElement.horizontal(18).setDistance(3);
-		Drawable slot = new Drawable(TEXTURE, 0, 223, 18, 18);
-		Drawable plus = new Drawable(TEXTURE, 0, 241, 15, 15);
-		Drawable arrow = new Drawable(TEXTURE, 15, 241, 18, 15);
-		background.drawable(slot);
-		background.drawable(0, 2, plus);
-		background.drawable(slot);
-		GuiElementContainer conditionArrow = background.panel(28, 18);
-		Collection<String> conditions = beeMutation.getSpecialConditions();
-		String text;
-		if(!conditions.isEmpty()){
-			text = String.format("[%.0f%%]", beeMutation.getBaseChance());
-		}else{
-			text = 	String.format("%.0f%%", beeMutation.getBaseChance());
-		}
-		conditionArrow.text(text, GuiElementAlignment.CENTER, 0);
-		conditionArrow.addTooltip(conditions);
-		conditionArrow.drawable(5, 6, arrow);
-		background.drawable(slot);
-		IGuiElementLayout foreground = mutationElement.horizontal(18).setDistance(23);
-		foreground.item(1, -17, beeRoot.getMemberStack(beeMutation.getAllele0(), EnumBeeType.PRINCESS));
-		foreground.item(1, -17, beeRoot.getMemberStack(beeMutation.getAllele1(), EnumBeeType.DRONE));
-		foreground.item(14, -17, beeRoot.getMemberStack(beeMutation.getTemplate(), EnumBeeType.QUEEN));
 	}
 
 	@Override

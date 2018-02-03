@@ -9,7 +9,6 @@ import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Random;
 
 import net.minecraft.item.ItemStack;
@@ -240,10 +239,5 @@ public interface ISpeciesRoot {
 	@SideOnly(Side.CLIENT)
 	default IDatabasePlugin getSpeciesPlugin(){
 		return null;
-	}
-
-	@SideOnly(Side.CLIENT)
-	default Optional<ISpeciesDisplayHelper> getDisplayHelper(){
-		return Optional.empty();
 	}
 }

@@ -1,6 +1,7 @@
 package forestry.book.gui.buttons;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
@@ -21,13 +22,15 @@ public class GuiButtonBookCategory extends GuiButton implements IToolTipProvider
 	@Override
 	public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks) {
 		if(visible){
+			this.hovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
+			FontRenderer fontRenderer = mc.fontRenderer;
 			GlStateManager.pushMatrix();
 			GlStateManager.translate(x, y, zLevel);
 			GlStateManager.scale(2F, 2F, 2F);
 			GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 			RenderHelper.enableGUIStandardItemLighting();
 			GlStateManager.enableRescaleNormal();
-			GuiUtil.drawItemStack(mc.fontRenderer, category.getStack(), 0, 0);
+			GuiUtil.drawItemStack(fontRenderer, category.getStack(), 0, 0);
 			RenderHelper.disableStandardItemLighting();
 			GlStateManager.popMatrix();
 		}

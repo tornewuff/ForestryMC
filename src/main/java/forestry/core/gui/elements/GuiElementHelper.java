@@ -92,13 +92,13 @@ public class GuiElementHelper implements IGuiElementHelper {
 	public void addBookMutation(int x, int y, IMutation mutation, Drawable slot, Drawable plus, Drawable arrow) {
 		ISpeciesRoot root = mutation.getRoot();
 		GuiElementLayout mutationElement = factory().createVertical(x, y, 108);
-		mutationElement.text("Bee Breeding", GuiElementAlignment.CENTER, 0);
+		mutationElement.horizontal(2);
 		//
-		GuiElementLayout background = mutationElement.horizontal(18).setDistance(3);
+		GuiElementLayout background = mutationElement.horizontal(0, 0, 18).setDistance(3);
 		background.drawable(slot);
 		background.drawable(0, 2, plus);
 		background.drawable(slot);
-		GuiElementContainer conditionArrow = background.panel(28, 18);
+		GuiElementContainer conditionArrow = background.panel(24, 18);
 		Collection<String> conditions = mutation.getSpecialConditions();
 		String text;
 		if (!conditions.isEmpty()) {
@@ -108,13 +108,14 @@ public class GuiElementHelper implements IGuiElementHelper {
 		}
 		conditionArrow.text(text, GuiElementAlignment.CENTER, 0);
 		conditionArrow.addTooltip(conditions);
-		conditionArrow.drawable(5, 6, arrow);
+		conditionArrow.drawable(3, 6, arrow);
 		background.drawable(slot);
 		//
-		IGuiElementLayout foreground = mutationElement.horizontal(18).setDistance(23);
+		IGuiElementLayout foreground = mutationElement.horizontal(2).setDistance(23);
 		foreground.item(1, -17, root.getMemberStack(mutation.getAllele0(), root.getTypeForMutation(0)));
 		foreground.item(1, -17, root.getMemberStack(mutation.getAllele1(), root.getTypeForMutation(1)));
-		foreground.item(14, -17, root.getMemberStack(mutation.getTemplate(), root.getTypeForMutation(2)));
+		foreground.item(10, -17, root.getMemberStack(mutation.getTemplate(), root.getTypeForMutation(2)));
+		add(mutationElement);
 	}
 
 	@Override

@@ -23,6 +23,11 @@ import forestry.api.core.GuiElementAlignment;
 import forestry.api.core.IGuiElement;
 import forestry.api.core.IGuiElementHelper;
 import forestry.api.core.IGuiElementLayout;
+import forestry.api.genetics.AlleleManager;
+import forestry.api.genetics.IAllele;
+import forestry.api.genetics.IAlleleSpecies;
+import forestry.api.genetics.IMutation;
+import forestry.api.genetics.ISpeciesRoot;
 import forestry.api.multiblock.IMultiblockBlueprint;
 import forestry.api.multiblock.MultiblockBlueprints;
 import forestry.core.config.Constants;
@@ -60,6 +65,7 @@ public class TextPageParser implements IBookPageFactory {
 		List<Image> images = new ArrayList<>();
 		List<IRecipe> recipes = new ArrayList<>();
 		List<IMultiblockBlueprint> blueprints = new ArrayList<>();
+		List<IAlleleSpecies> mutations = new ArrayList<>();
 		//Parse all crafting recipes and replace the old position of it with <1>
 		String[] recipeArray = text.split("<crafting>");
 		for (int i = 1; i < recipeArray.length; i++) {
@@ -117,6 +123,26 @@ public class TextPageParser implements IBookPageFactory {
 			}
 		}
 
+		//Parse all mutation and replace the old position of it with <2>
+		String[] mutationArray = text.split("<mutation>");
+		for (int i = 1; i < mutationArray.length; i++) {
+			String rawText = mutationArray[i];
+			int endIndex = rawText.indexOf("</mutation>");
+			if (endIndex < 0) {
+				continue;
+			}
+			String rawSpecies = rawText.substring(0, endIndex);
+			IAllele allele = AlleleManager.alleleRegistry.getAllele(rawSpecies);
+			if (allele instanceof IAlleleSpecies) {
+				mutations.add((IAlleleSpecies) allele);
+				text = text.replaceFirst(rawSpecies, "<7>\n");
+			} else {
+				text = text.replaceFirst(rawSpecies, "\n");
+			}
+		}
+		text = text.replaceAll("<mutation>", "");
+		text = text.replaceAll("</mutation>", "");
+
 		PageBuilder builder = new PageBuilder();
 		FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
 		boolean unicode = fontRenderer.getUnicodeFlag();
@@ -171,6 +197,17 @@ public class TextPageParser implements IBookPageFactory {
 					builder.add(t[1]);
 				}
 				continue;
+			}else if(line.contains("<7>")){
+				String[] t = line.split("<7>");
+				if (t.length > 0) {
+					builder.add(t[0]);
+				}
+				IAlleleSpecies species = mutations.remove(0);
+				builder.add(species);
+				if (t.length > 1) {
+					builder.add(t[1]);
+				}
+				continue;
 			} else if (line.endsWith("\n")) {
 				builder.empty();
 				continue;
@@ -218,13 +255,17 @@ public class TextPageParser implements IBookPageFactory {
 	}
 
 	private static class PageBuilder {
-		public static final Drawable CRAFTING_GRID = new Drawable(new ResourceLocation(Constants.MOD_ID, Constants.TEXTURE_PATH_GUI + "/atlas.png"), 158, 181, 98, 58);
+		public static final ResourceLocation BOOK_TEXTURE = new ResourceLocation(Constants.MOD_ID, Constants.TEXTURE_PATH_GUI + "/atlas.png");
+		public static final Drawable CRAFTING_GRID = new Drawable(BOOK_TEXTURE, 158, 181, 98, 58);
+		public static final Drawable SLOT = new Drawable(BOOK_TEXTURE, 0, 223, 18, 18);
+		public static final Drawable MUTATION_PLUS = new Drawable(BOOK_TEXTURE, 0, 241, 15, 15);
+		public static final Drawable MUTATION_ARROW = new Drawable(BOOK_TEXTURE, 15, 241, 18, 15);
 
 		private static final int PAGE_HEIGHT = 155;
 
 		private List<IBookPage> pages = new ArrayList<>();
 		@Nullable
-		private IGuiElementHelper currentPage;
+		private GuiElementHelper currentPage;
 		@Nullable
 		private ContentType previousElement = null;
 
@@ -251,6 +292,18 @@ public class TextPageParser implements IBookPageFactory {
 			previousElement = ContentType.IMAGE;
 			IGuiElementHelper page = page(image.height);
 			page.add(page.centerElementX(new GuiElementDrawable(0, 0, image.width, image.height, image.drawable)));
+		}
+
+		public void add(IAlleleSpecies species){
+			if(previousElement != ContentType.MUTATION){
+				page(12).addText(TextFormatting.DARK_GRAY + "Bee Breeding", GuiElementAlignment.CENTER);
+			}
+			previousElement = ContentType.MUTATION;
+			ISpeciesRoot root = species.getRoot();
+			for(IMutation mutation : root.getResultantMutations(species)) {
+				GuiElementHelper page = page(18);
+				page.addBookMutation(0, 0, mutation, SLOT, MUTATION_PLUS, MUTATION_ARROW);
+			}
 		}
 
 		public void add(IMultiblockBlueprint blueprint) {
@@ -298,11 +351,11 @@ public class TextPageParser implements IBookPageFactory {
 			return currentPage != null && currentPage.getParent().getElements().isEmpty();
 		}
 
-		private IGuiElementHelper page(int height) {
+		private GuiElementHelper page(int height) {
 			return page(false, height);
 		}
 
-		private IGuiElementHelper page(boolean forced, int elementHeight) {
+		private GuiElementHelper page(boolean forced, int elementHeight) {
 			if (currentPage == null) {
 				currentPage = createNewPage();
 			} else {
