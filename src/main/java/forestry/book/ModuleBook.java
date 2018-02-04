@@ -34,8 +34,8 @@ public class ModuleBook extends BlankForestryModule {
 
 	@Override
 	public void registerRecipes() {
-		RecipeUtil.addShapelessRecipe("book", new ItemStack(getItems().book), Items.BOOK, OreDictUtil.DROP_HONEYDEW);
-		RecipeUtil.addShapelessRecipe("book", new ItemStack(getItems().book), Items.BOOK, OreDictUtil.TREE_SAPLING);
+		RecipeUtil.addShapelessRecipe("book_honey", new ItemStack(getItems().book), Items.BOOK, OreDictUtil.DROP_HONEY);
+		RecipeUtil.addShapelessRecipe("book_tree", new ItemStack(getItems().book), Items.BOOK, OreDictUtil.TREE_SAPLING);
 	}
 
 	@Override
